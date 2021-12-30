@@ -70,8 +70,7 @@ Each card states department's name, short description, workers and average salar
 A number of existing departments in shown on the top of the page.
 Under it, there is a button "+ Add", which takes a user to the department adding page (2.2)
 
-Department's name is a link to filtered list of employees of this department (3.1)
-Text "and X more..." is also a link to the filtered list.
+Department's name is a link to filtered list of employees of this department (3.1). Text "and _X_ more..." is also a link to the filtered list.
 
 If there are no departments, a label depicting this is shown.
 
@@ -107,9 +106,9 @@ _Pic. 2.1.4. Delete confirmation_
 * The form for adding a department is displayed
 * User enters department’s data and presses “Add” button;
 * If any data is entered incorrectly, incorrect data messages are displayed;
-* If entered data is valid, then record is adding to database;
-* If error occurs, then error message is displaying;
-* If new department is successfully added, then list of departments with added records is displaying (2.1)
+* If entered data is valid, then the record is added to database;
+* If an error occurs, then the error message is displayed
+* If new department is successfully added, then list of departments with added department is displayed(2.1)
 
 **Cancel operation scenario:**
 
@@ -254,7 +253,7 @@ _Pic. 3.1.1. List of employees_
 
 List consists of cards, each card represents an employee.
 Each card states employee's name, job, department, date of birth and salary.
-Employee's department is a link to filtered list of employees of theirs department (3.1)
+Employee's department is a link to filtered list of employees of theirs department (3.1).
 
 If the list is requested with filters, it contains only the employees who match it. 
 
@@ -305,10 +304,10 @@ _Pic. 3.1.5. Delete confirmation_
 
 * User clicks "+ Add" on the employee list screen (3.1)
 * The form for adding an employee is displayed
-* User enters employee’s data and presses “Add” button;
-* If any data is entered incorrectly, incorrect data messages are displayed;
-* If entered data is valid, then record is adding to database;
-* If error occurs, then error message is displaying;
+* User enters employee’s data and presses “Add” button
+* If any data is entered incorrectly, incorrect data messages are displayed
+* If entered data is valid, then the record is added to database
+* If an error occurs, then error message is displayed
 * If new employee is successfully added, then the **unfiltered** list of employees with added records is displayed (3.1)
 
 **Cancel operation scenario:**
