@@ -1,6 +1,6 @@
 # Department App
 
-### A simple web application for managing departments and employees. 
+## A simple web application for managing departments and employees. 
 
 **The web application can:**
 - display a list of departments
@@ -10,7 +10,7 @@
 - search for employees born on a certain date or in the period between dates
 - change (add / edit / delete) the above data
 
-### **1. Homepage**
+## **1. Homepage**
 
 **Main scenario:**
 
@@ -24,9 +24,9 @@
 _Pic. 1. Homepage_
 
 
-### **2. Departments**
+## **2. Departments**
 
-####2.1 Display list of departments
+###2.1 Display list of departments
 
 **Main scenario:**
 
@@ -99,7 +99,7 @@ In the confirmation dialog:
 
 _Pic. 2.1.4. Delete confirmation_
 
-####2.2 Adding a department
+###2.2 Adding a department
 
 **Main scenario:**
 
@@ -130,7 +130,7 @@ Constraints for data validation:
 * Name – unique, maximum length of 80 characters;
 * Description  – maximum length of 300 characters;
 
-####2.3 Editing a department
+###2.3 Editing a department
 
 **Main scenario:**
 
@@ -158,7 +158,7 @@ Constraints for data validation:
 _Pic. 2.3. Editing a department_
 
 
-####2.4 Removing a department
+###2.4 Removing a department
 
 **Main scenario:**
 
@@ -186,9 +186,9 @@ _Pic. 2.3. Editing a department_
 _Pic. 2.4. Deleting a department (confirmation dialog)_
 
 
-### **3. Employees**
+## **3. Employees**
 
-####3.1 Display list of employees
+###3.1 Display list of employees
 
 **Main scenario:**
 
@@ -299,7 +299,7 @@ In the confirmation window:
 
 _Pic. 3.1.5. Delete confirmation_
 
-####3.2 Adding an employee
+###3.2 Adding an employee
 
 **Main scenario:**
 
@@ -335,7 +335,7 @@ Constraints for data validation:
 * Date of Birth  – date, before current day;
 * Salary – a positive integer;
 
-####3.3 Editing an employee
+###3.3 Editing an employee
 
 **Main scenario:**
 
@@ -363,7 +363,7 @@ Constraints for data validation:
 _Pic. 3.3. Editing an employee_
 
 
-####3.4 Removing an employee
+###3.4 Removing an employee
 
 **Main scenario:**
 
