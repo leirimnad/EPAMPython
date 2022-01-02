@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <title>Employees</title>
+        <style>
+            .to-show {
+                display: none;
+            }
+            .to-hover:hover > .to-show {
+                display: block;
+            }
+        </style>
+  </head>
+  <body>
+
+
+    <header class="p-3 mb-5 border-bottom">
+        <div class="container-fluid">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 fs-5 ">
+              <li class="nav-item mx-2"><a href="departments.html" class="nav-link link-dark">Departments</a></li>
+              <li class="nav-item mx-2" ><a href="employees.html" class="nav-link link-dark">Employees</a></li>
+            </ul>
+
+          </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+
+        <div class="mt-3 my-5">
+            <h1>Employees</h1>
+            <p class="fs-5">There are a total of 16 employees working at 2 departments.</p>
+            <a type="button" class="btn btn-success btn-lg" role="button" href="employee.html"><i class="bi bi-plus-lg" ></i> Add</a>
+            <span class="mx-3 fs-5">or</span>
+            <button class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="bi bi-funnel-fill"></i> Filter</button>
+
+        </div>
+
+
+
+
+
+
+        <div class="card px-2 my-3 to-hover">
+            <div class="card-body">
+                <div class="row align-items-center mb-2">
+                    <div class="col-auto text-center px-4">
+                        <i class="bi bi-person-fill align-baseline" style="font-size: 7rem;"></i>
+                    </div>
+                    <div class="col px-0">
+
+                        <h1 class="card-title fw-normal">
+                                John <strong>Doe</strong>
+                        </h1>
+
+                        <div style="color: #4f4f4f" class="my-2">
+                            <h5 class="card-subtitle fs-5">
+                                Marketing Specialist
+                            </h5>
+                            <span class="card-subtitle fs-6">
+                                at <a href="employees.html" class="link-secondary">Marketing Department</a>
+                            </span>
+                        </div>
+
+
+
+                        <p class="card-text">
+                            Date of Birth:
+                            <b>12/12/1990</b>
+                            <br>
+                            Salary:
+                            <span class="text-success fw-bold fs-5">$500</span>
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="dropdown to-show" style="position:absolute; right:1rem; top:0.5rem;">
+              <div class="link-secondary fs-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots"></i>
+              </div>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="employee.html">Edit</a></li>
+                <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-deleteValue="1" data-bs-deleteName="John Doe">Delete</a></li>
+              </ul>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+    <div class="modal fade py-5" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <form action="employees.html" method="post">
+            <input type="hidden" name="deleteId" value="1" id="formDeleteId">
+              <div class="modal-dialog">
+                <div class="modal-content rounded-4 shadow">
+                  <div class="modal-body p-4 text-center">
+                      <h5 class="mb-0">Delete <span id="modalDeleteName"></span>?</h5>
+                  </div>
+
+                  <div class="modal-footer flex-nowrap p-0">
+                      <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 link-dark" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-lg btn-danger fs-6 text-decoration-none col-6 m-0 rounded-0" value="Delete">Delete</button>
+                  </div>
+                </div>
+              </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const deleteValue = button.getAttribute('data-bs-deleteValue');
+            const deleteName = button.getAttribute('data-bs-deleteName');
+            const deleteEmployees = button.getAttribute('data-bs-totalEmployees');
+
+            const modalDeleteName = deleteModal.querySelector('#modalDeleteName');
+            const modalDeleteEmployees = deleteModal.querySelector('#modalDeleteEmployees');
+            const modalDeleteId = deleteModal.querySelector('#formDeleteId');
+
+            modalDeleteName.textContent = deleteName
+            modalDeleteEmployees.textContent = deleteEmployees
+            modalDeleteId.value = deleteValue
+
+        })
+    </script>
+
+
+    <div class="modal fade py-5" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <form action="employees.html" method="get" id="filterForm">
+              <div class="modal-dialog">
+                <div class="modal-content rounded-4 shadow ">
+
+                    <div class="p-4">
+
+                        <h4 class="form-label">Show only the employees that...</h4>
+
+                        <div class="form-check form-switch my-4">
+                            <input class="form-check-input" type="checkbox" id="filter-birth-date-switch">
+                            <label class="form-label" for="filter-birth-date-switch">Were born between</label>
+                            <div class="container">
+                                <input type="date" id="form-date-start" name="born-from">
+                                <span class="mx-1">and</span>
+                                <input type="date" id="form-date-end" name="born-to">
+                            </div>
+
+                        </div>
+                        <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="filter-department-switch">
+                              <label class="form-label" for="filter-department-switch">Work at</label>
+
+                            <div class="container">
+
+                                <select class="form-select" id="form-department" name="department">
+                                  <option value="1">Marketing Department</option>
+                                  <option value="2">Finance Department</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                  <div class="modal-footer flex-nowrap p-0">
+                      <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 link-dark" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-lg btn-primary fs-6 text-decoration-none col-6 m-0 rounded-0">Filter</button>
+                  </div>
+                </div>
+              </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+           dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+           mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("form-date-start").setAttribute("max", today);
+        var minDate = (yyyy-150) + '-' + mm + '-' + dd;
+        document.getElementById("form-date-start").setAttribute("min", minDate);
+
+        const filterForm = document.getElementById('filterForm');
+        filterForm.addEventListener('submit', function (event) {
+            let filled = false;
+            let switches = document.querySelectorAll('#filterForm input[type="checkbox"]');
+
+              for (let sw of switches) {
+                 if(sw.checked) filled = true;
+              }
+
+            if (!filled){
+                event.preventDefault();
+                bootstrap.Modal.getInstance(document.getElementById("filterModal")).hide();
+            }
+
+
+        })
+    </script>
+
+
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+</html>
