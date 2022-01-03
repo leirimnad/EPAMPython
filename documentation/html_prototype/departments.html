@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <title>Departments</title>
+        <style>
+            .to-show {
+                display: none;
+            }
+            .to-hover:hover > .to-show {
+                display: block;
+            }
+        </style>
+  </head>
+  <body>
+
+
+    <header class="p-3 mb-5 border-bottom">
+        <div class="container-fluid">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 fs-5 ">
+              <li class="nav-item mx-2"><a href="departments.html" class="nav-link link-dark">Departments</a></li>
+              <li class="nav-item mx-2" ><a href="employees.html" class="nav-link link-dark">Employees</a></li>
+            </ul>
+
+          </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+
+        <div class="mt-3 my-5">
+            <h1>Departments</h1>
+            <p class="fs-5">There are a total of 2 departments.</p>
+            <a type="button" class="btn btn-success btn-lg" role="button" href="department.html"><i class="bi bi-plus-lg" ></i> Add</a>
+        </div>
+
+
+
+
+
+
+        <div class="card px-2 my-3 to-hover">
+            <div class="card-body">
+                <div class="row align-items-center mb-2">
+                    <div class="col-auto text-center px-3">
+                        <i class="bi bi-person-workspace align-baseline" style="font-size: 4rem;"></i>
+                    </div>
+                    <div class="col align-center px-0">
+                        <div class="row align-center">
+                                <h1 class="card-title d-inline align-middle mx-2 my-0 fw-bold">
+                                    <a href="departments.html" class="text-reset text-decoration-none">
+                                        Marketing Department
+                                    </a>
+                                </h1>
+
+                        </div>
+                        <div class="row align-center" >
+                            <span class="card-subtitle align-middle mx-2 fs-5 text-secondary">
+                                Promotes the business and the mission of the organisation
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <p class="card-text">
+                    <b>Workers:</b>
+                    <br>
+                    John Doe, Marques Brownlee, Linda Simons <a href="#" class="card-link link-secondary fst-italic">and 14 more...</a>
+                </p>
+
+                <p class="card-text">
+                    <b>Average salary:</b>
+                    <br>
+                    <span class="text-success fw-bold fs-5">$500</span>
+                </p>
+            </div>
+
+
+            <div class="dropdown to-show" style="position:absolute; right:1rem; top:0.5rem;">
+              <div class="link-secondary fs-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots"></i>
+              </div>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="department.html">Edit</a></li>
+                <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-deleteValue="1" data-bs-deleteName="Marketing Department" data-bs-totalEmployees="17">Delete</a></li>
+              </ul>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+    <div class="modal fade py-5" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <form action="departments.html" method="post">
+            <input type="hidden" name="deleteId" value="1" id="formDeleteId">
+              <div class="modal-dialog">
+                <div class="modal-content rounded-4 shadow">
+                  <div class="modal-body p-4 text-center">
+                      <h5 class="mb-0">Delete <span id="modalDeleteName"></span>?</h5>
+                      <p class="mb-0">This will delete all of its <span id="modalDeleteEmployees"></span> employees.</p>
+                  </div>
+
+                  <div class="modal-footer flex-nowrap p-0">
+                      <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 link-dark" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-lg btn-danger fs-6 text-decoration-none col-6 m-0 rounded-0" name="action" value="delete">Delete</button>
+                  </div>
+                </div>
+              </div>
+        </form>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const deleteValue = button.getAttribute('data-bs-deleteValue');
+            const deleteName = button.getAttribute('data-bs-deleteName');
+            const deleteEmployees = button.getAttribute('data-bs-totalEmployees');
+
+            const modalDeleteName = deleteModal.querySelector('#modalDeleteName');
+            const modalDeleteEmployees = deleteModal.querySelector('#modalDeleteEmployees');
+            const modalDeleteId = deleteModal.querySelector('#formDeleteId');
+
+            modalDeleteName.textContent = deleteName
+            modalDeleteEmployees.textContent = deleteEmployees
+            modalDeleteId.value = deleteValue
+
+        })
+    </script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+</html>
