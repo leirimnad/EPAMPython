@@ -11,3 +11,6 @@ install:
 script:
   - pylint department_app
   - coverage run -m pytest
+
+after_success:
+  - coveralls
