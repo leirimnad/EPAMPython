@@ -1,3 +1,3 @@
-"""At this moment it's just an almost empty file"""
+"""At this moment it's just an empty file"""
 
-print("I am an __init__ file")
+from department_app.app import db
