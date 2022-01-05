@@ -1,3 +1,5 @@
-"""At this moment it's just an empty file"""
+"""
+Init file, tells that current directory is a module.
+"""
 
 from department_app.app import db

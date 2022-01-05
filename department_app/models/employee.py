@@ -5,6 +5,7 @@ Module that describes the model of an employee.
 from department_app import db
 
 
+# pylint: disable=too-few-public-methods
 class Employee(db.Model):
     """
     Model describing an employee.

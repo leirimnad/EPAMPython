@@ -4,6 +4,7 @@ This module contains a description of a Department model.
 from department_app import db
 
 
+# pylint: disable=too-few-public-methods
 class Department(db.Model):
     """
     Model describing a department.
