@@ -9,7 +9,7 @@ install:
   - pip install pylint
 
 script:
-  - pylint department_app
+  - pylint department_app --load-plugins=pylint_flask_sqlalchemy,pylint_flask
   - coverage run -m pytest
 
 after_success:

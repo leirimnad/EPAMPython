@@ -1,3 +1,5 @@
-"""At this moment it's just an almost empty file"""
+"""
+Init file, tells that current directory is a module.
+"""
 
-print("I am an __init__ file")
+from department_app.app import db
