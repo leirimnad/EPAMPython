@@ -1,5 +1,3 @@
 """
-Init file, tells that current directory is a module.
+A simple web application for managing departments and employees.
 """
-
-from department_app.app import db

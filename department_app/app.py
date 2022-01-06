@@ -1,23 +1,23 @@
 """
-Module that starts an app.
+Module that starts an app, connects to the database
 """
-import os
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from department_app.database import db, configure_app_env
 
 app = Flask(__name__, static_url_path='/department_app/static/')
 
-DB_USER = os.environ.get("MYSQL_DB_USER")
-DB_PASSWORD = os.environ.get("MYSQL_DB_PASSWORD")
-DB_HOST = os.environ.get("MYSQL_DB_HOST")
-DB_DATABASE = os.environ.get("MYSQL_DB_DATABASE")
+configure_app_env(app=app)
+db.init_app(app=app)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = \
-    f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_DATABASE}'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-db = SQLAlchemy(app)
+with app.app_context():
+    db.create_all()
+
 migrate = Migrate(app, db)
-db.create_all()
+
+if __name__ == '__main__':
+    from department_app.rest import api
+    api.init_app(app)
+    app.run(debug=True)

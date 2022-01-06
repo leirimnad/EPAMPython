@@ -2,10 +2,9 @@
 Module that describes the model of an employee.
 """
 
-from department_app import db
+from department_app.database import db
 
 
-# pylint: disable=too-few-public-methods
 class Employee(db.Model):
     """
     Model describing an employee.
@@ -18,6 +17,20 @@ class Employee(db.Model):
     job = db.Column(db.String(100), unique=False, nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
     salary = db.Column(db.Integer, nullable=False)
+
+    def to_dict(self):
+        """
+        Returns a subscriptable dictionary representing the employee.
+        @return: employee dictionary
+        """
+        return {
+            "id": self.id,
+            "name": self.name,
+            "department_id": self.department_id,
+            "job": self.job,
+            "birth_date": self.birth_date,
+            "salary": self.salary
+        }
 
     def __repr__(self):
         return f'<Employee {self.id}>'
