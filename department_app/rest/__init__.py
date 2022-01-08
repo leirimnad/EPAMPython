@@ -12,5 +12,3 @@ api.add_resource(DepartmentAPI, '/department/<string:dep_id>')
 
 api.add_resource(EmployeeListAPI, '/employee/')
 api.add_resource(EmployeeAPI, '/employee/<string:emp_id>')
-
-

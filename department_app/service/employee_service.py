@@ -6,8 +6,10 @@ from datetime import date
 
 from department_app.models import Employee, Department
 from department_app.database import db
+from .employee_validate import EmployeeFieldValidations
 
-# pylint: disable=R0913
+
+# pylint: disable=too-many-arguments
 class EmployeeService:
     """
     Contains functions for working with employees through a database.
@@ -48,6 +50,14 @@ class EmployeeService:
         @return: created employee instance
         """
 
+        EmployeeFieldValidations.validate_all(
+            name=name,
+            department=department,
+            job=job,
+            birth_date=birth_date,
+            salary=salary
+        )
+
         emp = Employee(
             id=uuid4(),
             name=name,
@@ -68,7 +78,7 @@ class EmployeeService:
             job: str = None,
             birth_date: date = None,
             salary: int = None
-    ) -> None:
+    ) -> Employee:
         """
         Used to update employee's information.
         @param employee: employee instance to update
@@ -78,17 +88,24 @@ class EmployeeService:
         @param birth_date: new employee's birthdate (optional)
         @param salary: new employee's salary (optional)
         """
-        if name:
+
+        if name is not None:
+            EmployeeFieldValidations.validate_name(name=name)
             employee.name = name
-        if department:
+        if department is not None:
+            EmployeeFieldValidations.validate_department(department=department)
             employee.department = department
-        if job:
+        if job is not None:
+            EmployeeFieldValidations.validate_job(job=job)
             employee.job = job
-        if birth_date:
+        if birth_date is not None:
+            EmployeeFieldValidations.validate_birth_date(birth_date=birth_date)
             employee.birth_date = birth_date
-        if salary:
+        if salary is not None:
+            EmployeeFieldValidations.validate_salary(salary=salary)
             employee.salary = salary
         db.session.commit()
+        return employee
 
     @staticmethod
     def delete_employee(employee: Employee) -> None:

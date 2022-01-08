@@ -4,7 +4,6 @@ Module that defines the REST API for the Department model.
 
 from flask import request
 from flask_restful import Resource
-from pymysql import err as pymysql_err
 from sqlalchemy import exc as sqlalchemy_err
 
 from department_app.service import DepartmentService
@@ -13,7 +12,7 @@ from .utils import format_exception_message
 
 class DepartmentListAPI(Resource):
     """
-    Defines the REST API for the full list of departments.
+    Defines the REST API for getting the full list of departments and creating a new one.
     """
 
     @staticmethod
@@ -73,7 +72,9 @@ class DepartmentAPI(Resource):
         description = request.form.get("description", default=None)
 
         try:
-            updated_dep = DepartmentService.update_department(department=dep, name=name, description=description)
+            updated_dep = DepartmentService.update_department(
+                department=dep, name=name, description=description
+            )
 
         except (ValueError, TypeError) as exc:
             return format_exception_message(exception=exc), 400
@@ -95,7 +96,9 @@ class DepartmentAPI(Resource):
         description = request.form.get("description", default="")
 
         try:
-            updated_dep = DepartmentService.update_department(department=dep, name=name, description=description)
+            updated_dep = DepartmentService.update_department(
+                department=dep, name=name, description=description
+            )
 
         except (ValueError, TypeError) as exc:
             return format_exception_message(exception=exc), 400

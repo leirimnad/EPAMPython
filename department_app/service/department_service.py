@@ -6,6 +6,7 @@ from uuid import uuid4
 from department_app.models import Department
 from department_app.database import db
 from department_app.database.constraints import DepartmentConstraints
+from .department_validate import DepartmentFieldValidations
 
 
 class DepartmentService:
@@ -39,18 +40,8 @@ class DepartmentService:
         @return: created department instance
         """
 
-        if not isinstance(name, str) or not isinstance(description, str):
-            raise TypeError("To create a department, provide name and description as strings.")
-        if not name:
-            raise ValueError("Name of the department is empty")
-        if len(name) > DepartmentConstraints.NAME_MAX_LEN:
-            raise ValueError(
-                f"Maximum length of department name is {DepartmentConstraints.NAME_MAX_LEN}"
-            )
-        if len(description) > DepartmentConstraints.DESCRIPTION_MAX_LEN:
-            raise ValueError(
-                f"Maximum length of department description is {DepartmentConstraints.DESCRIPTION_MAX_LEN}"
-            )
+        DepartmentFieldValidations.validate_name(name=name)
+        DepartmentFieldValidations.validate_description(description=description)
 
         dep = Department(id=uuid4(), name=name, description=description)
         db.session.add(dep)
@@ -68,25 +59,11 @@ class DepartmentService:
         """
 
         if name is not None:
-            if not isinstance(name, str):
-                raise TypeError("Provide name as a string.")
-            if name == "":
-                raise TypeError("Name of the department is empty")
-            if len(name) > DepartmentConstraints.NAME_MAX_LEN:
-                raise ValueError(
-                    f"Maximum length of department name is {DepartmentConstraints.NAME_MAX_LEN}"
-                )
+            DepartmentFieldValidations.validate_name(name=name)
             department.name = name
 
         if description is not None:
-            if not isinstance(description, str):
-                raise TypeError("Provide description as a string.")
-            if len(description) > DepartmentConstraints.DESCRIPTION_MAX_LEN:
-                raise ValueError(
-                    f"Maximum length of department description is "
-                    f"{DepartmentConstraints.DESCRIPTION_MAX_LEN}"
-                )
-
+            DepartmentFieldValidations.validate_description(description=description)
             department.description = description
 
         db.session.commit()
