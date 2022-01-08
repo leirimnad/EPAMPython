@@ -11,14 +11,14 @@ class DepartmentFieldValidations:
     """
 
     @staticmethod
-    def validate_name(name, can_be_None=False):
+    def validate_name(name, can_be_none=False):
         """
         Validates name of a department.
         If a field is not correct, an exception is raised.
-        @param can_be_None: is name required to be not None
+        @param can_be_none: is name required to be not None
         @param name: name to validate
         """
-        if name is None and can_be_None:
+        if name is None and can_be_none:
             return
         if not isinstance(name, str):
             raise TypeError("Provide department's name as a string")
@@ -30,18 +30,19 @@ class DepartmentFieldValidations:
             )
 
     @staticmethod
-    def validate_description(description, can_be_None=False):
+    def validate_description(description, can_be_none=False):
         """
         Validates department of a department.
         If a field is not correct, an exception is raised.
-        @param can_be_None: can description be None
+        @param can_be_none: can description be None
         @param description: department to validate
         """
-        if description is None and can_be_None:
+        if description is None and can_be_none:
             return
         if not isinstance(description, str):
             raise TypeError("Provide department's description as a string")
         if len(description) > DepartmentConstraints.DESCRIPTION_MAX_LEN:
             raise ValueError(
-                f"Maximum length of the department's description is {DepartmentConstraints.DESCRIPTION_MAX_LEN}"
+                f"Maximum length of the department's description is "
+                f"{DepartmentConstraints.DESCRIPTION_MAX_LEN}"
             )

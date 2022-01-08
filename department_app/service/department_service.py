@@ -1,11 +1,12 @@
 """
 Includes service class for working with departments.
 """
+from typing import Optional
 from uuid import uuid4
+from sqlalchemy.sql import func
 
-from department_app.models import Department
+from department_app.models import Department, Employee
 from department_app.database import db
-from department_app.database.constraints import DepartmentConstraints
 from .department_validate import DepartmentFieldValidations
 
 
@@ -70,7 +71,7 @@ class DepartmentService:
         return department
 
     @staticmethod
-    def delete_department(department):
+    def delete_department(department: Department):
         """
         Used to delete a department from the database.
         @param department: department to delete
@@ -79,3 +80,18 @@ class DepartmentService:
             raise TypeError("Wrong data type")
         db.session.delete(department)
         db.session.commit()
+
+    @staticmethod
+    def get_department_average_salary(department: Department) -> Optional[float]:
+        """
+        Used to calculate average salary for a department.
+        @param department: department to calculate an average salary of
+        @return: average salary as a float or None if there are no employees in the department
+        """
+        res = db.session\
+            .query(func.avg(Employee.salary).label('average'))\
+            .filter(Employee.department == department)\
+            .all()
+        if res[0][0] is None:
+            return None
+        return float(res[0][0])

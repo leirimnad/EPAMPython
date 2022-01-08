@@ -57,7 +57,9 @@ class DepartmentAPI(Resource):
         @return: department as a dictionary or 404 error if department does not exist
         """
         dep = DepartmentService.get_department_by_id(dep_id=dep_id)
-        return dep.to_dict()
+        res = dep.to_dict()
+        res["average_salary"] = DepartmentService.get_department_average_salary(dep)
+        return res
 
     @staticmethod
     def patch(dep_id):

@@ -4,6 +4,7 @@ Module for validating incoming information of an employee.
 
 from datetime import date
 from department_app.database.constraints import EmployeeConstraints
+from department_app.models import Department
 
 
 class EmployeeFieldValidations:
@@ -54,6 +55,8 @@ class EmployeeFieldValidations:
         """
         if not department:
             raise ValueError("Department is not provided")
+        if not isinstance(department, Department):
+            raise TypeError("Department is provided incorrectly")
 
     @staticmethod
     def validate_job(job):

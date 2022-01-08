@@ -1,6 +1,8 @@
+import random
 import unittest
 import uuid
 
+from department_app.models import Employee
 from testbase import TestBase, DEP_COUNT
 from werkzeug import exceptions
 from sqlalchemy import exc
@@ -80,6 +82,34 @@ class TestDepartmentService(TestBase):
             dep = Department.query.first()
             DepartmentService.delete_department(dep)
             self.assertIsNone(Department.query.get(dep.id))
+
+    def test_average_dep_salary(self):
+        with self.app.app_context():
+            dep = random.choice(Department.query.all())
+
+            employees = Employee.query.filter(Employee.department == dep).all()
+            salaries = []
+            for emp in employees:
+                salaries.append(emp.salary)
+
+            if len(salaries) == 0:
+                self.assertIsNone(DepartmentService.get_department_average_salary(dep))
+            else:
+                self.assertEqual(
+                    round(DepartmentService.get_department_average_salary(dep)),
+                    round(sum(salaries)/len(salaries))
+                )
+
+    def test_average_dep_salary_without_employees(self):
+        with self.app.app_context():
+            dep = Department.query.first()
+            employees = Employee.query.filter(Employee.department == dep).all()
+            for emp in employees:
+                db.session.delete(emp)
+            db.session.commit()
+
+            self.assertIsNone(DepartmentService.get_department_average_salary(dep))
+
 
 
 if __name__ == "__main__":
