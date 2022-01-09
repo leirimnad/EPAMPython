@@ -1,6 +1,7 @@
 """
 Includes service class for working with departments.
 """
+
 from typing import Optional
 from uuid import uuid4
 from sqlalchemy.sql import func

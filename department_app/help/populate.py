@@ -49,3 +49,4 @@ def populate_database(of_app):
 if __name__ == '__main__':
     from department_app.app import app
     populate_database(app)
+    print("Database populated!")

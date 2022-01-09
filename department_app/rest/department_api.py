@@ -7,7 +7,7 @@ from flask_restful import Resource
 from sqlalchemy import exc as sqlalchemy_err
 
 from department_app.service import DepartmentService
-from .utils import format_exception_message
+from .utils import format_exception_message, log_unhandled_exception
 
 
 class DepartmentListAPI(Resource):
@@ -21,6 +21,7 @@ class DepartmentListAPI(Resource):
         Get request handler.
         @return: list of departments dictionaries
         """
+
         deps = DepartmentService.get_all_departments()
         return [dep.to_dict() for dep in deps]
 
@@ -30,16 +31,18 @@ class DepartmentListAPI(Resource):
         Put request handler.
         @return: new department as dictionary, if one was successfully created
         """
-        name = request.form['name']
-        description = request.form['description']
 
         try:
+            name = request.form.get("name")
+            description = request.form.get("description")
             new_dep = DepartmentService.create_department(name=name, description=description)
-
         except (ValueError, TypeError) as exc:
             return format_exception_message(exception=exc), 400
         except sqlalchemy_err.IntegrityError as exc:
             return format_exception_message(exc.orig), 400
+        except Exception as exc:
+            log_unhandled_exception(exc)
+            return format_exception_message(), 500
 
         return new_dep.to_dict(), 202
 
@@ -56,6 +59,7 @@ class DepartmentAPI(Resource):
         @param dep_id: id of the department to get
         @return: department as a dictionary or 404 error if department does not exist
         """
+
         dep = DepartmentService.get_department_by_id(dep_id=dep_id)
         res = dep.to_dict()
         res["average_salary"] = DepartmentService.get_department_average_salary(dep)
@@ -82,6 +86,9 @@ class DepartmentAPI(Resource):
             return format_exception_message(exception=exc), 400
         except sqlalchemy_err.IntegrityError as exc:
             return format_exception_message(exc.orig), 400
+        except Exception as exc:
+            log_unhandled_exception(exc)
+            return format_exception_message(), 500
 
         return updated_dep.to_dict(), 202
 
@@ -106,6 +113,9 @@ class DepartmentAPI(Resource):
             return format_exception_message(exception=exc), 400
         except sqlalchemy_err.IntegrityError as exc:
             return format_exception_message(exc.orig), 400
+        except Exception as exc:
+            log_unhandled_exception(exc)
+            return format_exception_message(), 500
 
         return updated_dep.to_dict(), 202
 

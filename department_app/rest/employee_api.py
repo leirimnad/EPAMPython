@@ -7,7 +7,7 @@ from flask_restful import Resource
 from sqlalchemy import exc as sqlalchemy_err
 
 from department_app.service import EmployeeService
-from .utils import format_exception_message, employee_dict_from_http_dict
+from .utils import format_exception_message, employee_dict_from_http_dict, log_unhandled_exception
 
 
 class EmployeeListAPI(Resource):
@@ -39,6 +39,9 @@ class EmployeeListAPI(Resource):
             return format_exception_message(exception=exc), 400
         except sqlalchemy_err.IntegrityError as exc:
             return format_exception_message(exc.orig), 400
+        except Exception as exc:
+            log_unhandled_exception(exc)
+            return format_exception_message(), 500
 
         return new_emp.to_dict(), 202
 
@@ -76,6 +79,10 @@ class EmployeeAPI(Resource):
             return format_exception_message(exception=exc), 400
         except sqlalchemy_err.IntegrityError as exc:
             return format_exception_message(exc.orig), 400
+        except Exception as exc:
+            log_unhandled_exception(exc)
+            return format_exception_message(), 500
+
         return updated_emp.to_dict(), 202
 
     @staticmethod
@@ -97,6 +104,9 @@ class EmployeeAPI(Resource):
             return format_exception_message(exception=exc), 400
         except sqlalchemy_err.IntegrityError as exc:
             return format_exception_message(exc.orig), 400
+        except Exception as exc:
+            log_unhandled_exception(exc)
+            return format_exception_message(), 500
 
         return updated_emp.to_dict(), 202
 
