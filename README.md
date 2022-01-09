@@ -1,4 +1,8 @@
 ### EPAM Python Project
+
+[![Coverage Status](https://coveralls.io/repos/github/leirimnad/EPAMPython/badge.svg?branch=main)](https://coveralls.io/github/leirimnad/EPAMPython?branch=main)
+[![Build Status](https://app.travis-ci.com/leirimnad/EPAMPython.svg?branch=main)](https://app.travis-ci.com/leirimnad/EPAMPython)
+
 # Department managing app
 
 ### A simple web application for managing departments and employees. 
