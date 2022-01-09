@@ -63,6 +63,13 @@ class DepartmentAPI(Resource):
         dep = DepartmentService.get_department_by_id(dep_id=dep_id)
         res = dep.to_dict()
         res["average_salary"] = DepartmentService.get_department_average_salary(dep)
+        res["employee_count"] = DepartmentService.get_department_employee_count(dep)
+
+        employee_sample = DepartmentService.get_department_employee_sample(dep, 3)
+        res["employee_sample"] = []
+        for employee in employee_sample:
+            res["employee_sample"].append(employee.to_dict())
+
         return res
 
     @staticmethod

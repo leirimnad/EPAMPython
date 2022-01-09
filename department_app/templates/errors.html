@@ -1,0 +1,7 @@
+{% if errors %}
+    {% for error in errors %}
+        <div class="alert alert-danger my-3">
+            <i class="bi bi-exclamation-triangle-fill mx-3"></i>
+            {{ error }}</div>
+    {%  endfor %}
+{% endif %}

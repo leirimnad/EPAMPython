@@ -2,7 +2,7 @@
 Includes service class for working with departments.
 """
 
-from typing import Optional
+from typing import Optional, Union
 from uuid import uuid4
 from sqlalchemy.sql import func
 
@@ -83,7 +83,7 @@ class DepartmentService:
         db.session.commit()
 
     @staticmethod
-    def get_department_average_salary(department: Department) -> Optional[float]:
+    def get_department_average_salary(department: Department) -> Optional[Union[float, int]]:
         """
         Used to calculate average salary for a department.
         @param department: department to calculate an average salary of
@@ -95,4 +95,13 @@ class DepartmentService:
             .all()
         if res[0][0] is None:
             return None
-        return float(res[0][0])
+        ret = float(res[0][0])
+        return int(ret) if ret.is_integer() else ret
+
+    @staticmethod
+    def get_department_employee_count(department: Department) -> int:
+        return Employee.query.filter(Employee.department_id == department.id).count()
+
+    @staticmethod
+    def get_department_employee_sample(department: Department, size: int) -> list:
+        return Employee.query.filter(Employee.department_id == department.id).limit(size).all()
