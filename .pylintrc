@@ -1,2 +1,7 @@
 [DEFAULT]
-ignored-classes=SQLObject,Registrant,scoped_session
+ignored-classes=scoped_session
+load-plugins=pylint_flask, pylint_flask_sqlalchemy
+disable=broad-except
+
+[SIMILARITIES]
+min-similarity-lines=10

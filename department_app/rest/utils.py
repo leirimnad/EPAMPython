@@ -3,10 +3,11 @@ Module with utility functions to work with Rest API.
 """
 import datetime
 import logging
-import traceback
 from typing import Union
-from department_app.service import DepartmentService
+
 from flask import request
+
+from department_app.service import DepartmentService
 
 
 def format_exception_message(exception: Union[Exception, str]=None):
@@ -71,5 +72,10 @@ def employee_dict_from_http_dict(http_dict: dict, required=True, exclude_keys: l
 
 
 def log_unhandled_exception(exc: Exception):
-    logging.warning(f"An exception has happened while handling {request.method} request to {request.url}:",
+    """
+    Logs a warning about an unexpected and unhandled exception.
+    @param exc: Exception to log
+    """
+    logging.warning("An exception has happened while handling %s "
+                    "request to %s:", request.method, request.url,
                     exc_info=exc)
