@@ -13,11 +13,13 @@ class Employee(db.Model):
     id = db.Column(db.String(36), primary_key=True)
     name = db.Column(db.String(80), unique=False, nullable=False)
     department_id = db.Column(db.String(36), db.ForeignKey("department.id"))
-    department = db.relationship("Department", backref="employee", lazy=True)
     job = db.Column(db.String(100), unique=False, nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
     salary = db.Column(db.Integer, nullable=False)
 
+    department = db.relationship("Department", backref="employee", lazy=True)
+
+    # pylint: disable=E1101
     def to_dict(self):
         """
         Returns a subscriptable dictionary representing the employee.
@@ -28,7 +30,7 @@ class Employee(db.Model):
             "name": self.name,
             "department_id": self.department_id,
             "job": self.job,
-            "birth_date": self.birth_date,
+            "birth_date": self.birth_date.strftime("%d/%m/%Y"),
             "salary": self.salary
         }
 

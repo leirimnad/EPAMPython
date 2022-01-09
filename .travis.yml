@@ -18,7 +18,7 @@ env:
   - MYSQL_DB_USER="root" MYSQL_DB_PASSWORD="" MYSQL_DB_HOST="127.0.0.1" MYSQL_DB_DATABASE="testbase"
 
 script:
-  - pylint department_app --load-plugins=pylint_flask_sqlalchemy,pylint_flask
+  - pylint department_app
   - coverage run -m unittest discover -s department_app/tests
 
 after_success:

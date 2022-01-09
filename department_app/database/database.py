@@ -22,6 +22,7 @@ def configure_app(app, /, db_user, db_password, db_host, db_database):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
+
 def configure_app_env(app):
     """
     Configures an app's mysql database connection using environmental variables:
