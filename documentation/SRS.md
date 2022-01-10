@@ -137,7 +137,7 @@ Constraints for data validation:
 * The "..." icon appears on the department's card
 * User clicks "..." and chooses "Edit" option
 * The department edit form is displayed
-* User changes department’s data and presses “Save” button;
+* User changes department’s data and presses the save button;
 * If any data is entered incorrectly, incorrect data messages are displayed;
 * If entered data is valid, then edited data is added to database;
 * If error occurs, then error message is displaying;
@@ -342,7 +342,7 @@ Constraints for data validation:
 * The "..." icon appears on the employee's card
 * User clicks "..." and chooses "Edit" option
 * The employee edit form is displayed
-* User changes employee’s data and presses “Save” button;
+* User changes employee’s data and presses the save button;
 * If any data is entered incorrectly, incorrect data messages are displayed;
 * If entered data is valid, then edited data is added to database;
 * If error occurs, then error message is displaying;

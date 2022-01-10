@@ -3,6 +3,7 @@ Module with utility functions to work with Rest API.
 """
 import datetime
 import logging
+import re
 from typing import Union
 
 from flask import request
@@ -50,7 +51,12 @@ def employee_dict_from_http_dict(http_dict: dict, required=True, exclude_keys: l
     if "birth_date" in http_dict.keys():
         try:
             birth_date_str = http_dict.get("birth_date")
-            res["birth_date"] = datetime.datetime.strptime(birth_date_str, "%d/%m/%Y").date()
+            if re.match(r"\d\d\d\d-\d\d-\d\d", birth_date_str):
+                res["birth_date"] = datetime.datetime.strptime(birth_date_str, "%Y-%m-%d").date()
+            elif re.match(r"\d\d/\d\d/\d\d\d\d", birth_date_str):
+                res["birth_date"] = datetime.datetime.strptime(birth_date_str, "%d/%m/%Y").date()
+            else:
+                raise ValueError("Provide the birthdate in %Y-%m-%d or %d/%m/%Y format!")
         except (TypeError, ValueError) as ex:
             raise ValueError("Date must be in %d/%m/%Y format") from ex
     elif required:

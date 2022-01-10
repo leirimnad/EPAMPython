@@ -5,6 +5,7 @@ Includes service class for working with departments.
 from typing import Optional, Union
 from uuid import uuid4
 from sqlalchemy.sql import func
+from sqlalchemy import asc
 
 from department_app.models import Department, Employee
 from department_app.database import db
@@ -31,7 +32,7 @@ class DepartmentService:
         Used to get a list of all the departments.
         @return: a list of Department instances
         """
-        return Department.query.all()
+        return Department.query.order_by(asc(Department.name)).all()
 
     @staticmethod
     def create_department(name: str, description: str) -> Department:

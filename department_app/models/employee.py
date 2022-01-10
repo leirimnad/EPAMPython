@@ -3,6 +3,7 @@ Module that describes the model of an employee.
 """
 
 from department_app.database import db
+from sqlalchemy.orm import backref
 
 
 class Employee(db.Model):
@@ -17,7 +18,7 @@ class Employee(db.Model):
     birth_date = db.Column(db.Date, nullable=False)
     salary = db.Column(db.Integer, nullable=False)
 
-    department = db.relationship("Department", backref="employee", lazy=True)
+    department = db.relationship("Department", backref=backref("employee", cascade="all,delete"), lazy=True)
 
     # pylint: disable=E1101
     def to_dict(self):

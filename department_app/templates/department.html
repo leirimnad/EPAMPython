@@ -46,7 +46,7 @@
         <p class="card-text">
             <b>Average salary:</b>
             <br>
-            <span class="text-success fw-bold fs-5">${{ department.get("average_salary") }}</span>
+            <span class="text-success fw-bold fs-5">${{ department.get("average_salary")|round(2) }}</span>
         </p>
         {% endif %}
     </div>

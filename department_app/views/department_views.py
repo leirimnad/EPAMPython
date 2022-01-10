@@ -6,21 +6,22 @@ from department_app.service import DepartmentService
 
 @web_app.route('/department/', endpoint="departments", methods=['GET', 'POST'])
 def departments():
-    if request.method == 'POST':
-        response = DepartmentListAPI.post()
-        if not 200 <= response[1] < 300:
-            return department_add(errors=[response[0].get("message")])
-
     deps = DepartmentListAPI.get()
     deps = list(map(lambda dep: DepartmentAPI.get(dep_id=dep.get("id")), deps))
-    print(deps)
 
     return render_template("departments.html", departments=deps)
 
 
-@web_app.route('/department/add', endpoint="department_add", methods=['GET'])
-def department_add(errors=None):
-    return render_template("department_add.html", errors=errors)
+@web_app.route('/department/add', endpoint="department_add", methods=['GET', 'POST'])
+def department_add(department_base=None, errors=None):
+    if request.method == 'POST':
+        response = DepartmentListAPI.post()
+        if 200 <= response[1] < 300:
+            return redirect(url_for("web_app.departments"))
+        errors = [response[0].get("message")]
+        department_base = request.form
+
+    return render_template("department_add.html", department_base=department_base, errors=errors)
 
 
 @web_app.route('/department/<string:dep_id>/edit', endpoint="department_edit", methods=['GET', 'POST'])

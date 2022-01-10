@@ -3,6 +3,7 @@ Includes service class for working with employees.
 """
 from uuid import uuid4
 from datetime import date
+from sqlalchemy import asc
 
 from department_app.models import Employee, Department
 from department_app.database import db
@@ -30,7 +31,7 @@ class EmployeeService:
         Used to get a list of all the employees.
         @return: a list of Employee instances
         """
-        return Employee.query.all()
+        return Employee.query.order_by(asc(Employee.name)).all()
 
     @staticmethod
     def create_employee(
