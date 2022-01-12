@@ -22,6 +22,13 @@
 
 ## Running the app
 
+### Installing requirements
+
+Before running the application, you may install the project requirements using `pip`:
+```bash
+pip install -r requirements.txt
+```
+
 ### Database configuration
 
 For the application to run, the MySQL database should be set up.
@@ -52,7 +59,7 @@ To populate the database with the small amount of test data, run `populate.py` f
 python -m department_app.help.populate
 ```
 
-> Don't forget about environmental variables!
+> Don't forget about the environmental variables!
 
 ### Starting the app without using the WSGI
 
@@ -62,10 +69,10 @@ If you don't want to use WSGI, you can start an app by running:
 python -m department_app.app
 ```
 
-> Don't forget about environmental variables!
+> Don't forget about the environmental variables!
 
 
-### Starting the app without using the WSGI
+### Starting the app using the WSGI
 
 If you want to start an app using Gunicorn, try the following:
 
@@ -80,7 +87,7 @@ Specify the amount of workers and the host as parameters:
 ```--b 127.0.0.1:7772``` for starting an app on *127.0.0.1:7772*
 
 
-> Still, don't forget about environmental variables!
+> Still, don't forget about the environmental variables!
 
 ## Using app's API
 
