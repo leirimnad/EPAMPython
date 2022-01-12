@@ -45,7 +45,7 @@ def populate_database(of_app, *, dep_count=4, emp_count=10):
             Department(
                 id=uuid4(),
                 name=f"{dep_names_chosen[i]} Department",
-                description=re.sub(r"\\n", "", text_generator.paragraph(min_sentences=1, max_sentences=2))[:290]
+                description=generate_description()
             )
         )
 
@@ -69,7 +69,13 @@ def populate_database(of_app, *, dep_count=4, emp_count=10):
     db.session.commit()
 
 
+def generate_description():
+    res = text_generator.paragraph(min_sentences=1, max_sentences=2)
+    res = re.sub(r"[^\w \-:,.!?-]", "", res)
+    return res[:290]
+
+
 if __name__ == '__main__':
     from department_app.app import app
-    populate_database(app, 4, 25)
+    populate_database(app, dep_count=4, emp_count=25)
     print("Database populated!")
