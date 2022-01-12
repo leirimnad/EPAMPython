@@ -13,10 +13,6 @@ from department_app.views import web_app
 app = Flask(__name__, static_url_path='/department_app/static/')
 app.register_blueprint(web_app)
 
-@app.route('/s')
-def bruh():
-    return "<h1>Bruhs</h1>"
-
 configure_app_env(app=app)
 db.init_app(app=app)
 api.init_app(app)
@@ -33,5 +29,3 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-

@@ -6,7 +6,9 @@ from uuid import uuid4
 
 from department_app.database.constraints import EmployeeConstraints
 from department_app.models import Employee, Department
-from testbase import TestBase
+from testbase import TestBase, decode_escapes
+from faker import Faker
+fake = Faker()
 
 
 class TestEmployeeAPI(TestBase):
@@ -25,7 +27,7 @@ class TestEmployeeAPI(TestBase):
             else str(uuid4()),
 
             birth_date=birth_date if birth_date is not None
-            else f"{random.randrange(1, 28)}/{random.randrange(1, 12)}/{random.randrange(1950, 2004)}",
+            else fake.date_time_between(start_date='-30y', end_date='now').strftime('%d/%m/%Y'),
 
             salary=salary if salary is not None
             else random.randrange(200, 800)
@@ -34,7 +36,8 @@ class TestEmployeeAPI(TestBase):
     def test_get_employees(self):
         response = self.client.get("/api/employee/")
         self.assertEqual(response.status_code, 200)
-        data = str(response.data)
+        data = decode_escapes(response.get_data(as_text=True))
+
         self.assertTrue(len(data) > 1)
 
         with self.app.app_context():
@@ -54,7 +57,7 @@ class TestEmployeeAPI(TestBase):
             emp = Employee.query.first()
 
         response = self.client.get(f"/api/employee/{emp.id}")
-        data = str(response.data)
+        data = decode_escapes(response.get_data(as_text=True))
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(emp.id in data)
@@ -110,8 +113,10 @@ class TestEmployeeAPI(TestBase):
     def test_create_employee_not_unique_department(self):
         with self.app.app_context():
             emp = Employee.query.first()
-        response = self.client.post(f"/api/employee/", data=self.generate_employee_dict(department_id=emp.department_id))
 
+        response = self.client.post(f"/api/employee/",
+                                    data=self.generate_employee_dict(department_id=emp.department_id)
+                                    )
         self.assertTrue(200 <= response.status_code < 300)
 
     def test_create_employee_long_name(self):

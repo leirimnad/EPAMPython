@@ -4,7 +4,7 @@ import unittest
 import uuid
 from datetime import date
 
-from testbase import TestBase, EMP_COUNT
+from testbase import TestBase
 from werkzeug import exceptions
 
 from department_app.service.employee_service import EmployeeService, Employee
@@ -49,7 +49,7 @@ class TestEmployeeService(TestBase):
     def test_get_all_employees(self):
         with self.app.app_context():
             employees = EmployeeService.get_all_employees()
-            self.assertEqual(len(employees), EMP_COUNT)
+            self.assertEqual(len(employees), self.EMP_COUNT)
 
     def test_update_employee_empty(self):
         with self.app.app_context():

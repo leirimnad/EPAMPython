@@ -33,7 +33,6 @@ class EmployeeListAPI(Resource):
 
         try:
             cleaned_data = employee_dict_from_http_dict(request.form, required=True)
-            print(cleaned_data)
             new_emp = EmployeeService.create_employee(**cleaned_data)
 
         except (ValueError, TypeError) as exc:

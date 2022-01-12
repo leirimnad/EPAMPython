@@ -2,7 +2,6 @@
 You can use this module to populate the MySQL database
 with a small amount of test departments and employees.
 """
-
 from uuid import uuid4
 import datetime
 import names
@@ -11,14 +10,24 @@ from department_app.models.department import Department
 from department_app.models.employee import Employee
 from department_app.database import db
 import random
+import re
+import os
 
-DEP_COUNT = 4
-EMP_COUNT = 25
+with open(os.path.join(os.path.dirname(__file__), "department_names.txt")) as file:
+    department_available_names = file.readlines()
+    department_available_names = [line.rstrip() for line in department_available_names]
+with open(os.path.join(os.path.dirname(__file__), "job_adjectives.txt")) as file:
+    job_adjectives = file.readlines()
+    job_adjectives = [line.rstrip() for line in job_adjectives]
+with open(os.path.join(os.path.dirname(__file__), "job_positions.txt")) as file:
+    job_positions = file.readlines()
+    job_positions = [line.rstrip() for line in job_positions]
+
+text_generator = DocumentGenerator()
 
 
-def populate_database(of_app):
-
-    text_generator = DocumentGenerator()
+def populate_database(of_app, *, dep_count=4, emp_count=10):
+    global department_available_names, job_adjectives, job_positions, text_generator
 
     db.init_app(of_app)
     of_app.app_context().push()
@@ -26,29 +35,21 @@ def populate_database(of_app):
     db.drop_all()
     db.create_all()
 
-    with open("department_names.txt") as file:
-        department_available_names = file.readlines()
+    if len(department_available_names) < dep_count:
+        department_available_names += [f"Department #{k}" for k in range(dep_count-len(department_available_names))]
 
-    if len(department_available_names) < DEP_COUNT:
-        department_available_names += [f"Department #{k}" for k in range(DEP_COUNT-len(department_available_names))]
-
-    dep_names_chosen = random.sample(department_available_names, DEP_COUNT)
+    dep_names_chosen = random.sample(department_available_names, dep_count)
     deps = []
-    for i in range(DEP_COUNT):
+    for i in range(dep_count):
         deps.append(
             Department(
                 id=uuid4(),
                 name=f"{dep_names_chosen[i]} Department",
-                description=text_generator.paragraph(min_sentences=1, max_sentences=2)[:290]
+                description=re.sub(r"\\n", "", text_generator.paragraph(min_sentences=1, max_sentences=2))[:290]
             )
         )
 
-    with open("job_adjectives.txt") as file:
-        job_adjectives = file.readlines()
-    with open("job_positions.txt") as file:
-        job_positions = file.readlines()
-
-    for i in range(EMP_COUNT):
+    for i in range(emp_count):
         Employee(
             id=uuid4(),
             name=names.get_full_name(),
@@ -70,5 +71,5 @@ def populate_database(of_app):
 
 if __name__ == '__main__':
     from department_app.app import app
-    populate_database(app)
+    populate_database(app, 4, 25)
     print("Database populated!")

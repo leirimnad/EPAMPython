@@ -101,8 +101,19 @@ class DepartmentService:
 
     @staticmethod
     def get_department_employee_count(department: Department) -> int:
+        """
+        A method to get an amount of employees working at department.
+        @param department: department of the employees
+        @return: an amount of employees working at department
+        """
         return Employee.query.filter(Employee.department_id == department.id).count()
 
     @staticmethod
     def get_department_employee_sample(department: Department, size: int) -> list:
+        """
+        A method to get a sample of employees working at a department.
+        @param department: department to get employees of
+        @param size: size of the sample
+        @return: a list of Employee instances
+        """
         return Employee.query.filter(Employee.department_id == department.id).limit(size).all()

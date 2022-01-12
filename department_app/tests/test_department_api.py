@@ -1,8 +1,10 @@
+import codecs
+import re
 from string import ascii_lowercase
 import random
 from uuid import uuid4
 
-from testbase import TestBase
+from testbase import TestBase, decode_escapes
 from department_app.models import Department
 from department_app.database.constraints import DepartmentConstraints
 
@@ -12,7 +14,7 @@ class TestDepartmentAPI(TestBase):
     def test_get_departments(self):
         response = self.client.get("/api/department/")
         self.assertEqual(response.status_code, 200)
-        data = str(response.data)
+        data = decode_escapes(response.get_data(as_text=True))
         self.assertTrue(len(data) > 1)
 
         with self.app.app_context():
@@ -27,7 +29,7 @@ class TestDepartmentAPI(TestBase):
             dep = Department.query.first()
 
         response = self.client.get(f"/api/department/{dep.id}")
-        data = str(response.data)
+        data = decode_escapes(response.get_data(as_text=True))
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(dep.id in data)

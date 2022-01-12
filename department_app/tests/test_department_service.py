@@ -3,7 +3,7 @@ import unittest
 import uuid
 
 from department_app.models import Employee
-from testbase import TestBase, DEP_COUNT
+from testbase import TestBase
 from werkzeug import exceptions
 from sqlalchemy import exc
 
@@ -40,7 +40,7 @@ class TestDepartmentService(TestBase):
     def test_get_all_departments(self):
         with self.app.app_context():
             deps = DepartmentService.get_all_departments()
-            self.assertEqual(len(deps), DEP_COUNT)
+            self.assertEqual(len(deps), self.DEP_COUNT)
 
     def test_update_department_empty(self):
         with self.app.app_context():
