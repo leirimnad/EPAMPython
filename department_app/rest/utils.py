@@ -4,14 +4,14 @@ Module with utility functions to work with Rest API.
 import datetime
 import logging
 import re
-from typing import Union
+from typing import Union, Optional
 
 from flask import request
 
 from department_app.service import DepartmentService
 
 
-def format_exception_message(exception: Union[Exception, str]=None):
+def format_exception_message(exception: Union[Exception, str] = None):
     """
     Formats Exception into an appropriate form for sending through HTTP.
     @param exception: Exception instance or exception description as string
@@ -49,16 +49,8 @@ def employee_dict_from_http_dict(http_dict: dict, required=True, exclude_keys: l
     res["job"] = http_dict.get("job")
 
     if "birth_date" in http_dict.keys():
-        try:
-            birth_date_str = http_dict.get("birth_date")
-            if re.match(r"\d\d\d\d-\d\d-\d\d", birth_date_str):
-                res["birth_date"] = datetime.datetime.strptime(birth_date_str, "%Y-%m-%d").date()
-            elif re.match(r"\d\d/\d\d/\d\d\d\d", birth_date_str):
-                res["birth_date"] = datetime.datetime.strptime(birth_date_str, "%d/%m/%Y").date()
-            else:
-                raise ValueError("Provide the birthdate in %Y-%m-%d or %d/%m/%Y format!")
-        except (TypeError, ValueError) as ex:
-            raise ValueError("Date must be in %d/%m/%Y format") from ex
+        birth_date_str = http_dict.get("birth_date")
+        res["birth_date"] = parse_date(birth_date_str)
     elif required:
         raise ValueError("Birthdate is not provided")
 
@@ -85,3 +77,23 @@ def log_unhandled_exception(exc: Exception):
     logging.warning("An exception has happened while handling %s "
                     "request to %s:", request.method, request.url,
                     exc_info=exc)
+
+
+def parse_date(date_string: str, required: bool = True) -> Optional[datetime.date]:
+    """
+    Parses a date of YYYY-MM-DD or DD/MM/YY format into a date instance.
+    @param date_string: string containing a date
+    @param required: if True, date_string will be required to not be None or empty,
+    otherwise None and empty strings will return None
+    @return: date instance or None if date_string is None and required is False
+    """
+    try:
+        if not date_string and not required:
+            return None
+        if re.match(r"\d\d\d\d-\d\d-\d\d", date_string):
+            return datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+        if re.match(r"\d\d/\d\d/\d\d\d\d", date_string):
+            return datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
+        raise ValueError("Provide the date in %Y-%m-%d or %d/%m/%Y format!")
+    except (TypeError, ValueError) as ex:
+        raise ValueError("Date must be in %d/%m/%Y format") from ex

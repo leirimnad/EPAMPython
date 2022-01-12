@@ -12,13 +12,26 @@ def employees():
     View for displaying a full or filtered list of the employees.
     @return: rendered template with the list of the employees
     """
+
+    filters = {k: v for k, v in request.args.items() if v != ""}
+    filter_names = set(filters.keys())
+    filtered = filter_names.intersection({"department", "born-from", "born-to", "born-on"})
+
     emps = EmployeeListAPI.get()
     department_set = set()
     for emp in emps:
         emp["department"] = DepartmentAPI.get(emp.get("department_id"))
         department_set.add(emp.get("department_id"))
 
-    return render_template("employees.html", employees=emps, department_count=len(department_set))
+    available_departments = DepartmentListAPI.get()
+
+    return render_template("employees.html",
+                           employees=emps,
+                           department_count=len(department_set),
+                           available_departments=available_departments,
+                           filtered=bool(filtered),
+                           filters=filters
+                           )
 
 
 @web_app.route('/employee/add', endpoint="employee_add", methods=['GET', 'POST'])

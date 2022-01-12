@@ -2,6 +2,7 @@
 You can use this module to populate the MySQL database
 with a small amount of test departments and employees.
 """
+import argparse
 from uuid import uuid4
 import datetime
 import names
@@ -77,5 +78,12 @@ def generate_description():
 
 if __name__ == '__main__':
     from department_app.app import app
-    populate_database(app, dep_count=4, emp_count=25)
+
+    parser = argparse.ArgumentParser(description='Populate database with test departments and employees')
+    parser.add_argument("-d", nargs=1, type=int, help='amount of departments to generate', default=4)
+    parser.add_argument("-e", nargs=1, type=int, help='amount of employees to generate', default=25)
+
+    args = parser.parse_args()
+
+    populate_database(app, dep_count=args.d, emp_count=args.e)
     print("Database populated!")

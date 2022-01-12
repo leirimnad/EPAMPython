@@ -34,6 +34,32 @@ class EmployeeService:
         return Employee.query.order_by(asc(Employee.name)).all()
 
     @staticmethod
+    def get_filtered_employees(
+            filter_department_id: str = None,
+            filter_start_date: date = None,
+            filter_end_date: date = None,
+            filter_certain_date: date = None
+    ) -> list:
+        """
+        Used to get a filtered list of all the employees.
+        @param filter_department_id: optional department id to filter for
+        @param filter_start_date: if applied, filters only employees born on or after the date
+        @param filter_end_date: if applied, filters only employees born on or before the date
+        @param filter_certain_date: if applied, filters only employees born on the date
+        @return: a filtered list of Employee instances
+        """
+        query = Employee.query.order_by(asc(Employee.name))
+        if filter_department_id is not None:
+            query = query.filter(Employee.department_id == filter_department_id)
+        if filter_start_date is not None:
+            query = query.filter(Employee.birth_date >= filter_start_date)
+        if filter_end_date is not None:
+            query = query.filter(Employee.birth_date <= filter_end_date)
+        if filter_certain_date is not None:
+            query = query.filter(Employee.birth_date == filter_certain_date)
+        return query.all()
+
+    @staticmethod
     def create_employee(
             name: str,
             department: Department,
