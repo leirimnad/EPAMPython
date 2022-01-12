@@ -71,7 +71,7 @@ def populate_database(of_app, *, dep_count=4, emp_count=10):
 
 def generate_description():
     res = text_generator.paragraph(min_sentences=1, max_sentences=2)
-    res = re.sub(r"[^\w \-:,.!?-]", "", res)
+    res = re.sub(r"[^a-zA-Z0-9 \-:,.!?-]", "", res)
     return res[:290]
 
 
