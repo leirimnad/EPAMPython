@@ -68,3 +68,13 @@ urllib3==1.26.7
 Werkzeug==2.0.2
 wrapt==1.13.3
 zipp==3.7.0
+pip~=21.3.1
+wheel~=0.36.2
+py~=1.11.0
+setuptools~=60.2.0
+attrs~=21.4.0
+Faker~=11.3.0
+pytest~=6.2.5
+names~=0.3.0
+pluggy~=1.0.0
+iniconfig~=1.1.1
