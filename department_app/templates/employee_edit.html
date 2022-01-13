@@ -37,7 +37,7 @@
           <div class="mb-3">
             <label for="formInputBirthDate" class="form-label">Date of Birth</label><br>
             <input type="date" id="formInputBirthDate" name="birth_date" class="form-control w-auto">
-            <script src="{{ url_for('static', filename="moment.js") }}"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
             <script type="text/javascript">
                 let dateInput = document.getElementById("formInputBirthDate");
                 let m = moment("{{ employee.birth_date }}", ['DD/MM/YYYY', 'YYYY-MM-DD'])
