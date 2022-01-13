@@ -87,7 +87,7 @@ Specify the amount of workers and the host as parameters:
 
 ```-w 4 ``` for using 4 workers
 
-```--b 127.0.0.1:7772``` for starting an app on *127.0.0.1:7772*
+```-b 127.0.0.1:7772``` for starting an app on *127.0.0.1:7772*
 
 
 > Still, don't forget about the environmental variables!
