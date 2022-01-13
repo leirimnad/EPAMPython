@@ -7,7 +7,7 @@
             <div class="col align-center px-0">
                 <div class="row align-center">
                         <h1 class="card-title d-inline align-middle mx-2 my-0 fw-bold">
-                            <a href="departments.html" class="text-reset text-decoration-none">
+                            <a href="{{ url_for("web_app.employees", department=department.get("id")) }}" class="text-reset text-decoration-none">
                                 {{ department.get("name") }}
                             </a>
                         </h1>
@@ -33,7 +33,7 @@
             {% endfor %}
 
             {% if department.get("employee_count") > department.get("employee_sample")|length %}
-            <a href="#" class="card-link link-secondary fst-italic">
+            <a href="{{ url_for("web_app.employees", department=department.get("id")) }}" class="card-link link-secondary fst-italic">
                 and
                 {{ department.get("employee_count") - department.get("employee_sample")|length }}
                 more...

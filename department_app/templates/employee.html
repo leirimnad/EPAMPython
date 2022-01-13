@@ -22,7 +22,7 @@
                     </h5>
                     <span class="card-subtitle fs-6">
                         at
-                        <a href="{{ url_for("web_app.employees", filter_department=employee.get("department").get("id")) }}" class="link-secondary">
+                        <a href="{{ url_for("web_app.employees", department=employee.get("department").get("id")) }}" class="link-secondary">
                             {{ employee.get("department").get("name") }}
                         </a>
                     </span>

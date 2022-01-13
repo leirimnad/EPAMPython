@@ -45,14 +45,14 @@ Database credentials are read by the application from the environmental variable
 
 - `MYSQL_DB_DATABASE`: MySQL database name
 
-> The simplest way to specify environmental variables is to insert the following before the bash commands:
+> The simplest way to specify the environmental variables is to insert the following before the bash commands:
 >
 > ```bash
 > MYSQL_DB_USER="Boss" MYSQL_DB_PASSWORD="MyPassword" MYSQL_DB_HOST="localhost" MYSQL_DB_DATABASE="my_database"
 > ```
 
-> Another way to specify environmental variables is to write them to `.env` file in the project root directory.
-> See the `.env.example` file for the example.
+> Another way to specify the environmental variables is to write them to `.env` file in the project root directory.
+> See the `.env.example` file for an example.
 
 ### Populating the database
 
@@ -180,7 +180,7 @@ _to **UPDATE SOME FIELDS** of the employee with id `<emp_id>`_.
 _to **DELETE** the employee with id `<emp_id>`_.
 
 
-## Using web app
+## Using the web app
 
 The index page of the app is located in the root of the host.
 
