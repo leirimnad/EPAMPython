@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Department App
+{% endblock %}
+
+{% block body %}
+  <div class="container my-3">
+    <h2 class="text-secondary text-center fw-normal">
+        Department App
+    </h2>
+  </div>
+
+    <div class="px-4 py-5 text-center fw-normal" style="margin-top: 14rem;">
+        <h1 class="display-3 my-3">Greetings!</h1>
+        <a class="link-primary" href="{{ url_for("web_app.departments") }}"><h3>View departments...</h3></a>
+        <a class="link-primary" href="/employee"><h3>View employees...</h3></a>
+    </div>
+{% endblock %}

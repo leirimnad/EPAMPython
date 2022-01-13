@@ -1,0 +1,223 @@
+{% extends "content_base.html" %}
+
+{% block title %}
+    Departments
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="mt-3 my-5">
+            <h1>Employees</h1>
+
+            <p class="fs-5 mb-0">
+                {% if employees|length > 0 %}
+                There are a total of {{ employees|length }} employees working in {{ department_count }} departments.
+                {% else %}
+                There are no employees.
+                {% endif %}
+            </p>
+
+            {% if filtered %}
+                <p class="fs-5 mb-0">
+                    This list is <strong>filtered</strong>. <a class="link-secondary" href="{{ url_for("web_app.employees") }}">Clear filters</a>
+                </p>
+            {% endif %}
+
+            <div class="mt-3">
+                <a type="button" class="btn btn-success btn-lg" role="button" href="{{ url_for("web_app.employee_add") }}">
+                    <i class="bi bi-plus-lg" ></i> Add
+                </a>
+
+                <span class="mx-3 fs-5">or</span>
+                <button class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="bi bi-funnel-fill"></i> Filter</button>
+            </div>
+        </div>
+
+        {% for employee in employees %}
+            {% include "employee.html" %}
+        {% endfor %}
+
+    </div>
+
+
+    <div class="modal fade py-5" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <input type="hidden" name="deleteId" value="1" id="formDeleteId">
+          <div class="modal-dialog">
+            <div class="modal-content rounded-4 shadow">
+              <div class="modal-body p-4 text-center">
+                  <h5 class="mb-0">Delete <span id="modalDeleteName"></span>?</h5>
+              </div>
+
+              <div class="modal-footer flex-nowrap p-0">
+                  <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 link-dark" data-bs-dismiss="modal">Cancel</button>
+                  <a role="button" class="btn btn-lg btn-danger fs-6 text-decoration-none col-6 m-0 rounded-0" id="deleteAnchor">Delete</a>
+              </div>
+            </div>
+          </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const deleteValue = button.getAttribute('data-bs-deleteValue');
+            const deleteName = button.getAttribute('data-bs-deleteName');
+
+            const modalDeleteName = deleteModal.querySelector('#modalDeleteName');
+            const modalDeleteId = deleteModal.querySelector('#deleteAnchor');
+
+
+            modalDeleteName.textContent = deleteName
+            modalDeleteId.href = deleteValue
+
+        })
+    </script>
+
+
+
+
+    <div class="modal fade py-5" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <form action="{{ url_for("web_app.employees") }}" method="get" id="filterForm">
+              <div class="modal-dialog">
+                <div class="modal-content rounded-4 shadow ">
+
+                    <div class="p-4">
+
+                        <h4 class="form-label">Show only the employees that...</h4>
+
+                        <div class="form-check form-switch my-4">
+                            <input class="form-check-input" type="checkbox" id="filter-birth-date-switch"
+                            {% if filters.get("born-from") or filters.get("born-to") or filters.get("born-on") %}
+                                checked
+                            {% endif %}
+                            >
+                            <label class="form-label" for="filter-birth-date-switch">Were born between</label>
+                            <div class="container">
+                                <input type="date" id="form-date-start" name="born-from" value="{{ filters.get("born-from") if filters.get("born-from") else "" }}{{ filters.get("born-on") if filters.get("born-on") and not filters.get("born-from") else "" }}">
+                                <span class="mx-1">and</span>
+                                <input type="date" id="form-date-end" name="born-to" value="{{ filters.get("born-to") if filters.get("born-to") else "" }}">
+                                <input type="hidden" id="form-date-on" name="born-on">
+
+                                <p class="mt-1 text-secondary">Leave the second date empty to search for one day</p>
+                            </div>
+
+                        </div>
+                        <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" id="filter-department-switch"
+                              {% if filters.get("department") %}
+                                checked
+                              {% endif %}
+                              >
+                              <label class="form-label" for="filter-department-switch">Work at</label>
+
+                            <div class="container">
+
+                                <select class="form-select" id="form-department" name="department">
+
+                                    {% for department in available_departments %}
+                                        <option value="{{ department.id }}"
+                                        {% if filters.get("department") and department.id == filters.get("department") %}
+                                            selected
+                                        {% endif %}
+                                        >{{ department.name }}</option>
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                  <div class="modal-footer flex-nowrap p-0">
+                      <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 link-dark" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-lg btn-primary fs-6 text-decoration-none col-6 m-0 rounded-0">Filter</button>
+                  </div>
+                </div>
+              </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+           dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+           mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("form-date-start").setAttribute("max", today);
+        var minDate = (yyyy-150) + '-' + mm + '-' + dd;
+        document.getElementById("form-date-start").setAttribute("min", minDate);
+
+        const filterForm = document.getElementById('filterForm');
+        filterForm.addEventListener('submit', function (event) {
+            let filled = false;
+            let switches = document.querySelectorAll('#filterForm input[type="checkbox"]');
+
+              for (let sw of switches) {
+                 if(sw.checked) filled = true;
+              }
+
+            if (!filled){
+                event.preventDefault();
+                bootstrap.Modal.getInstance(document.getElementById("filterModal")).hide();
+            }
+
+
+        })
+
+
+
+        filterForm.addEventListener("submit", function (evt) {
+            if(!document.getElementById("filter-birth-date-switch").checked) {
+                document.getElementById("form-date-start").value = "";
+                document.getElementById("form-date-end").value = "";
+            }
+            document.getElementById("filter-birth-date-switch").value = "";
+
+
+            if(!document.getElementById("filter-department-switch").checked) {
+                document.getElementById("form-department").value = "";
+            }
+            document.getElementById("filter-department-switch").value = "";
+
+            if(document.getElementById("form-date-start").value !== "" &&
+                document.getElementById("form-date-end").value === ""){
+                document.getElementById("form-date-on").value = document.getElementById("form-date-start").value;
+                document.getElementById("form-date-start").value = "";
+            }
+
+            if(document.getElementById("form-date-start").value === "" &&
+                document.getElementById("form-date-end").value !== ""){
+                document.getElementById("form-date-end").value = "";
+            }
+
+            bootstrap.Modal.getInstance(document.getElementById("filterModal")).hide();
+            return true;
+        }, false);
+
+
+        document.getElementById("filter-birth-date-switch").addEventListener("click", function (evt) {
+            if(!document.getElementById("filter-birth-date-switch").checked){
+                document.getElementById("form-date-start").value = "";
+                document.getElementById("form-date-end").value = "";
+            }
+        }, false);
+
+    </script>
+
+
+
+
+{% endblock %}

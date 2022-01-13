@@ -7,7 +7,8 @@ from flask_restful import Resource
 from sqlalchemy import exc as sqlalchemy_err
 
 from department_app.service import EmployeeService
-from .utils import format_exception_message, employee_dict_from_http_dict, log_unhandled_exception
+from .utils import format_exception_message, employee_dict_from_http_dict, \
+    log_unhandled_exception, parse_date
 
 
 class EmployeeListAPI(Resource):
@@ -21,7 +22,21 @@ class EmployeeListAPI(Resource):
         Get request handler.
         @return: list of employees dictionaries
         """
-        emps = EmployeeService.get_all_employees()
+        filter_department_id = request.args.get("department")
+        filter_start_date = request.args.get("born-from")
+        filter_end_date = request.args.get("born-to")
+        filter_certain_date = request.args.get("born-on")
+
+        if not (filter_department_id or filter_certain_date
+                or filter_start_date or filter_end_date):
+            emps = EmployeeService.get_all_employees()
+        else:
+            emps = EmployeeService.get_filtered_employees(
+                filter_department_id=filter_department_id,
+                filter_start_date=parse_date(filter_start_date, required=False),
+                filter_end_date=parse_date(filter_end_date, required=False),
+                filter_certain_date=parse_date(filter_certain_date, required=False),
+            )
         return [emp.to_dict() for emp in emps]
 
     @staticmethod

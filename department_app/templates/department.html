@@ -1,0 +1,66 @@
+<div class="card px-2 my-3 to-hover">
+    <div class="card-body">
+        <div class="row align-items-center mb-2">
+            <div class="col-auto text-center px-3">
+                <i class="bi bi-person-workspace align-baseline" style="font-size: 4rem;"></i>
+            </div>
+            <div class="col align-center px-0">
+                <div class="row align-center">
+                        <h1 class="card-title d-inline align-middle mx-2 my-0 fw-bold">
+                            <a href="{{ url_for("web_app.employees", department=department.get("id")) }}" class="text-reset text-decoration-none">
+                                {{ department.get("name") }}
+                            </a>
+                        </h1>
+
+                </div>
+                <div class="row align-center" >
+                    <span class="card-subtitle align-middle mx-2 fs-5 text-secondary">
+                        {{ department.get("description") }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        {% if department.get("employee_count") > 0 %}
+        <p class="card-text">
+            <b>Workers:</b>
+            <br>
+            {% set employee_counter = department.get("employee_count") - 1 %}
+            {% for c in range(department.get("employee_sample")|length) %}
+                {{ department.get("employee_sample")[c].get("name") }}{% if c < department.get("employee_sample")|length-1 %},
+                {% endif %}
+            {% endfor %}
+
+            {% if department.get("employee_count") > department.get("employee_sample")|length %}
+            <a href="{{ url_for("web_app.employees", department=department.get("id")) }}" class="card-link link-secondary fst-italic">
+                and
+                {{ department.get("employee_count") - department.get("employee_sample")|length }}
+                more...
+            </a>
+            {% endif %}
+        </p>
+        {% endif %}
+
+        {% if department.get("average_salary") != None %}
+        <p class="card-text">
+            <b>Average salary:</b>
+            <br>
+            <span class="text-success fw-bold fs-5">${{ department.get("average_salary")|round(2) }}</span>
+        </p>
+        {% endif %}
+    </div>
+
+
+    <div class="dropdown to-show" style="position:absolute; right:1rem; top:0.5rem;">
+      <div class="link-secondary fs-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-three-dots"></i>
+      </div>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ url_for("web_app.department_edit", dep_id=department.get("id")) }}">Edit</a></li>
+        <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-deleteValue="{{ url_for("web_app.department_delete", dep_id=department.get("id")) }}" data-bs-deleteName="{{ department.get("name") }}" data-bs-totalEmployees="{{ department.get("employee_count") }}">Delete</a></li>
+      </ul>
+    </div>
+
+
+</div>

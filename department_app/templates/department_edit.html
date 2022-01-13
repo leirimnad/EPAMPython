@@ -1,0 +1,28 @@
+{% extends "content_base.html" %}
+
+{% block title %}
+    Editing {{ department.get("name") }}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-3 my-5">
+
+        <h1 class="fw-normal mb-4">You are editing a <strong>Department</strong></h1>
+
+        <form action="{{ url_for("web_app.department_edit", dep_id=department.get("id")) }}" method="post">
+          <div class="mb-3">
+            <label for="formInputName" class="form-label">Name</label>
+            <input name="name" type="text" class="form-control" id="formInputName" maxlength="80" value="{{ department.get("name") }}">
+          </div>
+          <div class="mb-4">
+            <label for="exampleInputPassword1" class="form-label">Description</label>
+              <textarea name="description" class="form-control" id="exampleInputPassword1" maxlength="300">{{ department.get("description") }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-success btn-lg">Submit</button>
+            <a role="button" class="btn btn-outline-dark btn-lg mx-2" href="{{ url_for("web_app.departments") }}">Cancel</a>
+        </form>
+
+        {% include "errors.html" %}
+
+    </div>
+{% endblock %}

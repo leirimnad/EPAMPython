@@ -1,0 +1,58 @@
+<div class="card px-2 my-3 to-hover">
+
+
+    <div class="card-body">
+        <div class="row align-items-center mb-2">
+            <div class="col-auto text-center px-4">
+                <i class="bi bi-person-fill align-baseline" style="font-size: 7rem;"></i>
+            </div>
+            <div class="col px-0">
+
+                <h1 class="card-title fw-normal">
+                    {% set name_list = employee.get("name").split(' ') %}
+                    {% for name in name_list %}
+                        {{ name if not loop.last else "" }}
+                        <strong>{{ name if loop.last else "" }}</strong>
+                    {% endfor %}
+                </h1>
+
+                <div style="color: #4f4f4f" class="my-2">
+                    <h5 class="card-subtitle fs-5">
+                        {{ employee.get("job") }}
+                    </h5>
+                    <span class="card-subtitle fs-6">
+                        at
+                        <a href="{{ url_for("web_app.employees", department=employee.get("department").get("id")) }}" class="link-secondary">
+                            {{ employee.get("department").get("name") }}
+                        </a>
+                    </span>
+                </div>
+
+
+
+                <p class="card-text">
+                    Date of Birth:
+                    <b>{{ employee.get("birth_date") }}</b>
+                    <br>
+                    Salary:
+                    <span class="text-success fw-bold fs-5">${{ employee.get("salary") }}</span>
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="dropdown to-show" style="position:absolute; right:1rem; top:0.5rem;">
+      <div class="link-secondary fs-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-three-dots"></i>
+      </div>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ url_for("web_app.employee_edit", emp_id=employee.get("id")) }}">Edit</a></li>
+        <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-deleteValue="{{ url_for("web_app.employee_delete", emp_id=employee.get("id")) }}" data-bs-deleteName="{{ employee.get("name") }}">Delete</a></li>
+      </ul>
+    </div>
+
+
+</div>

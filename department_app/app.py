@@ -8,8 +8,11 @@ from flask import Flask
 from flask_migrate import Migrate
 from department_app.database import db, configure_app_env
 from department_app.rest import api
+from department_app.views import web_app
 
 app = Flask(__name__, static_url_path='/department_app/static/')
+app.register_blueprint(web_app)
+
 configure_app_env(app=app)
 db.init_app(app=app)
 api.init_app(app)

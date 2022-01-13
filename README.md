@@ -22,6 +22,13 @@
 
 ## Running the app
 
+### Installing requirements
+
+Before running the application, you may install the project requirements using `pip`:
+```bash
+pip install -r requirements.txt
+```
+
 ### Database configuration
 
 For the application to run, the MySQL database should be set up.
@@ -38,11 +45,14 @@ Database credentials are read by the application from the environmental variable
 
 - `MYSQL_DB_DATABASE`: MySQL database name
 
-> The simplest way to specify environmental variables is to insert the following before the bash commands:
+> The simplest way to specify the environmental variables is to insert the following before the bash commands:
 >
 > ```bash
 > MYSQL_DB_USER="Boss" MYSQL_DB_PASSWORD="MyPassword" MYSQL_DB_HOST="localhost" MYSQL_DB_DATABASE="my_database"
 > ```
+
+> Another way to specify the environmental variables is to write them to `.env` file in the project root directory.
+> See the `.env.example` file for an example.
 
 ### Populating the database
 
@@ -52,7 +62,7 @@ To populate the database with the small amount of test data, run `populate.py` f
 python -m department_app.help.populate
 ```
 
-> Don't forget about environmental variables!
+> Don't forget about the environmental variables!
 
 ### Starting the app without using the WSGI
 
@@ -62,10 +72,10 @@ If you don't want to use WSGI, you can start an app by running:
 python -m department_app.app
 ```
 
-> Don't forget about environmental variables!
+> Don't forget about the environmental variables!
 
 
-### Starting the app without using the WSGI
+### Starting the app using the WSGI
 
 If you want to start an app using Gunicorn, try the following:
 
@@ -80,7 +90,7 @@ Specify the amount of workers and the host as parameters:
 ```--b 127.0.0.1:7772``` for starting an app on *127.0.0.1:7772*
 
 
-> Still, don't forget about environmental variables!
+> Still, don't forget about the environmental variables!
 
 ## Using app's API
 
@@ -125,6 +135,14 @@ _to **DELETE** the department with id `<dep_id>`_.
 - Send a **GET** request to `/api/employee/`
 _to **GET** the list of all the employees_
 
+- Send a **GET** request to `/api/employee/` with parameters
+_to **GET** the **filtered** list of all the employees_
+  - Specify the next filters:
+    - `department` (optional) - employees' department id
+    - `born-on` (optional) - employees born on the `dd/mm/yyyy` date
+    - `born-from` (optional) - employees born after or on the `dd/mm/yyyy` date
+    - `born-to` (optional) - employees born before or on the `dd/mm/yyyy` date
+
 - Send a **POST** request to `/api/employee/`
 _to **CREATE** an employee_. 
   - Specify the next data:
@@ -159,4 +177,25 @@ _to **UPDATE SOME FIELDS** of the employee with id `<emp_id>`_.
   - The updated employee will be returned to you if one has been updated successfully.
 
 - Send a **DELETE** request to `/api/employee/<emp_id>`
-_to **DELETE** the employee with id `<emp_id>`_. 
+_to **DELETE** the employee with id `<emp_id>`_.
+
+
+## Using the web app
+
+The index page of the app is located in the root of the host.
+
+#### Departments
+
+- To **view** the departments, go to `/department/`
+- To **create** a department, go to `/department/add`
+- To **edit** a department, go to `/department/<dep_id>/edit`
+- To **delete** a department, go to `/department/<dep_id>/delete`
+
+
+#### Employees
+
+- To **view** the employees, go to `/employee/`
+- To **view the filtered** list of employees, go to `/employee/` and click *"Filter"*
+- To **create** an employee, go to `/employee/add`
+- To **edit** an employee, go to `/employee/<emp_id>/edit`
+- To **delete** an employee, go to `/employee/<emp_id>/delete`

@@ -2,9 +2,10 @@
 Includes service class for working with departments.
 """
 
-from typing import Optional
+from typing import Optional, Union
 from uuid import uuid4
 from sqlalchemy.sql import func
+from sqlalchemy import asc
 
 from department_app.models import Department, Employee
 from department_app.database import db
@@ -31,7 +32,7 @@ class DepartmentService:
         Used to get a list of all the departments.
         @return: a list of Department instances
         """
-        return Department.query.all()
+        return Department.query.order_by(asc(Department.name)).all()
 
     @staticmethod
     def create_department(name: str, description: str) -> Department:
@@ -83,7 +84,7 @@ class DepartmentService:
         db.session.commit()
 
     @staticmethod
-    def get_department_average_salary(department: Department) -> Optional[float]:
+    def get_department_average_salary(department: Department) -> Optional[Union[float, int]]:
         """
         Used to calculate average salary for a department.
         @param department: department to calculate an average salary of
@@ -95,4 +96,24 @@ class DepartmentService:
             .all()
         if res[0][0] is None:
             return None
-        return float(res[0][0])
+        ret = float(res[0][0])
+        return int(ret) if ret.is_integer() else ret
+
+    @staticmethod
+    def get_department_employee_count(department: Department) -> int:
+        """
+        A method to get an amount of employees working at department.
+        @param department: department of the employees
+        @return: an amount of employees working at department
+        """
+        return Employee.query.filter(Employee.department_id == department.id).count()
+
+    @staticmethod
+    def get_department_employee_sample(department: Department, size: int) -> list:
+        """
+        A method to get a sample of employees working at a department.
+        @param department: department to get employees of
+        @param size: size of the sample
+        @return: a list of Employee instances
+        """
+        return Employee.query.filter(Employee.department_id == department.id).limit(size).all()

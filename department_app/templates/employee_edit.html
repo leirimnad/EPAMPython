@@ -1,0 +1,61 @@
+{% extends "content_base.html" %}
+
+{% block title %}
+    Editing {{ employee.get("name") }}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-3 my-5">
+
+        <h1 class="fw-normal mb-4">You are editing an <strong>Employee</strong></h1>
+
+        <form action="{{ url_for("web_app.employee_edit", emp_id=employee.id) }}" method="post">
+          <div class="mb-3">
+            <label for="formInputName" class="form-label">Name</label>
+            <input name="name" type="text" class="form-control" id="formInputName" maxlength="80" value="{{ employee.name }}">
+          </div>
+
+
+        <div class="mb-3">
+            <label for="form-department" class="form-label">Department</label>
+            <select class="form-select" id="form-department" name="department_id">
+                {% for department in available_departments %}
+                    <option value="{{ department.id }}"
+                            {{ "selected" if department.id == employee.department_id else "" }}
+                    >{{ department.name }}</option>
+                {% endfor %}
+            </select>
+
+        </div>
+
+
+          <div class="mb-3">
+            <label for="formInputJob" class="form-label">Job</label>
+            <input name="job" type="text" class="form-control" id="formInputJob" maxlength="100" value="{{ employee.job }}">
+          </div>
+
+          <div class="mb-3">
+            <label for="formInputBirthDate" class="form-label">Date of Birth</label><br>
+            <input type="date" id="formInputBirthDate" name="birth_date" class="form-control w-auto">
+            <script src="{{ url_for('static', filename="moment.js") }}"></script>
+            <script type="text/javascript">
+                let dateInput = document.getElementById("formInputBirthDate");
+                let m = moment("{{ employee.birth_date }}", ['DD/MM/YYYY', 'YYYY-MM-DD'])
+                dateInput.value = m.format('YYYY-MM-DD');
+            </script>
+          </div>
+
+          <div class="mb-4">
+            <label for="formInputSalary" class="form-label">Salary, $</label><br>
+            <input type="number" id="formInputSalary" name="salary" min="0" class="form-control w-auto" value="{{ employee.salary }}">
+          </div>
+
+
+          <button type="submit" class="btn btn-success btn-lg">Submit</button>
+            <a role="button" class="btn btn-outline-dark btn-lg mx-2" href="{{ url_for("web_app.employees") }}">Cancel</a>
+        </form>
+
+        {% include "errors.html" %}
+
+    </div>
+{% endblock %}

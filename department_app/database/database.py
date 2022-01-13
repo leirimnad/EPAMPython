@@ -4,6 +4,7 @@ Database module is used to create an SQLAlchemy database instance.
 
 import os
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 
 db = SQLAlchemy()
 
@@ -22,7 +23,6 @@ def configure_app(app, /, db_user, db_password, db_host, db_database):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
-
 def configure_app_env(app):
     """
     Configures an app's mysql database connection using environmental variables:
@@ -32,6 +32,9 @@ def configure_app_env(app):
     MYSQL_DB_DATABASE: MySQL database
     @param app: Flask app instance
     """
+
+    load_dotenv()
+
     db_user = os.environ.get("MYSQL_DB_USER")
     db_password = os.environ.get("MYSQL_DB_PASSWORD")
     db_host = os.environ.get("MYSQL_DB_HOST")
