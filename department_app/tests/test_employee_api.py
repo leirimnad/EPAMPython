@@ -8,6 +8,7 @@ from department_app.database.constraints import EmployeeConstraints
 from department_app.models import Employee, Department
 from testbase import TestBase, decode_escapes
 from faker import Faker
+
 fake = Faker()
 
 
@@ -50,6 +51,84 @@ class TestEmployeeAPI(TestBase):
                 self.assertTrue(str(emp.birth_date.year) in data)
                 self.assertTrue(str(emp.birth_date.month) in data)
                 self.assertTrue(str(emp.birth_date.day) in data)
+
+    def test_get_employees_filter_department(self):
+        with self.app.app_context():
+            dep = Department.query.first()
+        response = self.client.get(f"/api/employee/?department={dep.id}")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+
+        employees_ids = set()
+        for d in data:
+            self.assertEqual(d["department_id"], dep.id)
+            employees_ids.add(d["id"])
+
+        self.assertEqual(len(data), len(employees_ids))
+
+        with self.app.app_context():
+            for emp in Employee.query.all():
+                if emp.department_id == dep.id:
+                    self.assertTrue(emp.id in employees_ids)
+
+    def test_get_employees_filter_certain_date(self):
+        with self.app.app_context():
+            emp = Employee.query.first()
+        response = self.client.get(f"/api/employee/?born-on={emp.birth_date.strftime('%d/%m/%Y')}")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+
+        employees_ids = set()
+        for d in data:
+            self.assertEqual(d["birth_date"], emp.birth_date.strftime('%d/%m/%Y'))
+            employees_ids.add(d["id"])
+
+        self.assertEqual(len(data), len(employees_ids))
+
+        with self.app.app_context():
+            for e in Employee.query.all():
+                if e.birth_date == emp.birth_date:
+                    self.assertTrue(emp.id in employees_ids)
+
+    def test_get_employees_filter_start_date(self):
+        with self.app.app_context():
+            emp = Employee.query.first()
+        response = self.client.get(f"/api/employee/?born-from={emp.birth_date.strftime('%d/%m/%Y')}")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+
+        employees_ids = set()
+        for d in data:
+            self.assertGreaterEqual(datetime.datetime.strptime(d["birth_date"], '%d/%m/%Y').date(),
+                                    emp.birth_date)
+            employees_ids.add(d["id"])
+
+        self.assertEqual(len(data), len(employees_ids))
+
+        with self.app.app_context():
+            for e in Employee.query.all():
+                if e.birth_date >= emp.birth_date:
+                    self.assertTrue(emp.id in employees_ids)
+
+    def test_get_employees_filter_end_date(self):
+        with self.app.app_context():
+            emp = Employee.query.first()
+        response = self.client.get(f"/api/employee/?born-to={emp.birth_date.strftime('%d/%m/%Y')}")
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+
+        employees_ids = set()
+        for d in data:
+            self.assertLessEqual(datetime.datetime.strptime(d["birth_date"], '%d/%m/%Y').date(),
+                                 emp.birth_date)
+            employees_ids.add(d["id"])
+
+        self.assertEqual(len(data), len(employees_ids))
+
+        with self.app.app_context():
+            for e in Employee.query.all():
+                if e.birth_date <= emp.birth_date:
+                    self.assertTrue(emp.id in employees_ids)
 
     def test_get_employee(self):
 
@@ -154,7 +233,7 @@ class TestEmployeeAPI(TestBase):
         with self.app.app_context():
             emp = Employee.query.first()
         data = self.generate_employee_dict()
-        response = self.client.patch(f"/api/employee/{emp.id}", 
+        response = self.client.patch(f"/api/employee/{emp.id}",
                                      data=data)
         self.assertTrue(200 <= response.status_code < 300)
         with self.app.app_context():

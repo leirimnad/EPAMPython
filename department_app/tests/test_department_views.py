@@ -32,6 +32,12 @@ class TestDepartmentViews(TestBase):
         response = self.client.post(f"/department/add", data=dict(name=uuid4(), description=""))
         self.assertTrue(200 <= response.status_code < 400)
 
+    def test_edit_department(self):
+        with self.app.app_context():
+            dep = Department.query.first()
+        response = self.client.get(f"/department/{dep.id}/edit")
+        self.assertTrue(200 <= response.status_code < 300)
+
     def test_delete_department(self):
         with self.app.app_context():
             dep = Department.query.first()
