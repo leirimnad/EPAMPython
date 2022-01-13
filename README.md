@@ -51,6 +51,9 @@ Database credentials are read by the application from the environmental variable
 > MYSQL_DB_USER="Boss" MYSQL_DB_PASSWORD="MyPassword" MYSQL_DB_HOST="localhost" MYSQL_DB_DATABASE="my_database"
 > ```
 
+> Another way to specify environmental variables is to write them to `.env` file in the project root directory.
+> See the `.env.example` file for the example.
+
 ### Populating the database
 
 To populate the database with the small amount of test data, run `populate.py` from `help` module.
@@ -132,6 +135,14 @@ _to **DELETE** the department with id `<dep_id>`_.
 - Send a **GET** request to `/api/employee/`
 _to **GET** the list of all the employees_
 
+- Send a **GET** request to `/api/employee/` with parameters
+_to **GET** the **filtered** list of all the employees_
+  - Specify the next filters:
+    - `department` (optional) - employees' department id
+    - `born-on` (optional) - employees born on the `dd/mm/yyyy` date
+    - `born-from` (optional) - employees born after or on the `dd/mm/yyyy` date
+    - `born-to` (optional) - employees born before or on the `dd/mm/yyyy` date
+
 - Send a **POST** request to `/api/employee/`
 _to **CREATE** an employee_. 
   - Specify the next data:
@@ -166,4 +177,25 @@ _to **UPDATE SOME FIELDS** of the employee with id `<emp_id>`_.
   - The updated employee will be returned to you if one has been updated successfully.
 
 - Send a **DELETE** request to `/api/employee/<emp_id>`
-_to **DELETE** the employee with id `<emp_id>`_. 
+_to **DELETE** the employee with id `<emp_id>`_.
+
+
+## Using web app
+
+The index page of the app is located in the root of the host.
+
+#### Departments
+
+- To **view** the departments, go to `/department/`
+- To **create** a department, go to `/department/add`
+- To **edit** a department, go to `/department/<dep_id>/edit`
+- To **delete** a department, go to `/department/<dep_id>/delete`
+
+
+#### Employees
+
+- To **view** the employees, go to `/employee/`
+- To **view the filtered** list of employees, go to `/employee/` and click *"Filter"*
+- To **create** an employee, go to `/employee/add`
+- To **edit** an employee, go to `/employee/<emp_id>/edit`
+- To **delete** an employee, go to `/employee/<emp_id>/delete`
