@@ -80,8 +80,8 @@ if __name__ == '__main__':
     from department_app.app import app
 
     parser = argparse.ArgumentParser(description='Populate database with test departments and employees')
-    parser.add_argument("-d", nargs=1, type=int, help='amount of departments to generate', default=4)
-    parser.add_argument("-e", nargs=1, type=int, help='amount of employees to generate', default=25)
+    parser.add_argument("-d", nargs="?", type=int, help='amount of departments to generate', default=4)
+    parser.add_argument("-e", nargs="?", type=int, help='amount of employees to generate', default=25)
 
     args = parser.parse_args()
 
